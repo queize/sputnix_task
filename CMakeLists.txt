@@ -8,11 +8,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
-
-add_executable(main ${SOURCES})
-target_include_directories(main
-    PUBLIC ${PROJECT_SOURCE_DIR}/include
-    PUBLIC boost_1_82_0
-)
+find_package(Boost)
+if(Boost_FOUND)
+    add_executable(main ${SOURCES})
+    target_include_directories(main
+        PUBLIC ${PROJECT_SOURCE_DIR}/include
+        PUBLIC ${Boost_INCLUDE_DIRS}
+    )
+else()
+    add_executable(main ${SOURCES})
+    target_include_directories(main
+        PUBLIC ${PROJECT_SOURCE_DIR}/include
+        PUBLIC boost_1_82_0
+    )
+endif()
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/${CMAKE_BUILD_TYPE})
